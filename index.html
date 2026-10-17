@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EyeSpye</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1120 480' fill='none' stroke='%23111' stroke-width='44' stroke-linecap='round'%3E%3Cpath d='M216 252C330 172 470 136 604 140 730 144 830 200 880 258 900 282 878 300 842 316 760 352 600 384 294 388'/%3E%3Cpath d='M386 172C358 262 404 366 508 366 612 366 652 266 628 176'/%3E%3Cpath d='M0 382C110 376 160 340 188 268 250 112 400 28 560 26 720 24 870 130 1004 207'/%3E%3C/svg%3E" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Montserrat:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <defs>
+        <linearGradient id="wm-grad" x1="0" x2="1" y1="0" y2="0">
+          <stop offset="0" stop-color="#b8c4d6" stop-opacity="0.15" />
+          <stop offset="0.28" stop-color="#8196b5" />
+          <stop offset="0.5" stop-color="#5d7497" />
+          <stop offset="0.72" stop-color="#8196b5" />
+          <stop offset="1" stop-color="#b8c4d6" stop-opacity="0.15" />
+        </linearGradient>
+      </defs>
+      <!-- Line-art eye logo. Stroke width comes from --logo-stroke on each use. -->
+      <symbol id="logo" viewBox="-12 -12 1144 504" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+        <g style="stroke-width: var(--logo-stroke, 2px)">
+          <path vector-effect="non-scaling-stroke" d="M0 382C110 376 160 340 188 268 250 112 400 28 560 26 720 24 870 130 1004 207 940 228 860 226 790 213" />
+          <path vector-effect="non-scaling-stroke" d="M216 252C330 172 470 136 604 140 730 144 830 200 880 258 900 282 878 300 842 316 760 352 600 384 294 388" />
+          <path vector-effect="non-scaling-stroke" d="M388 171C480 152 640 168 790 214" />
+          <path vector-effect="non-scaling-stroke" d="M294 388C338 430 420 468 522 470 650 472 760 424 818 372 870 330 980 320 1116 334" />
+          <path vector-effect="non-scaling-stroke" d="M386 172C358 262 404 366 508 366 612 366 652 266 628 176" />
+          <circle vector-effect="non-scaling-stroke" cx="541" cy="232" r="25" />
+          <circle vector-effect="non-scaling-stroke" cx="585" cy="273" r="10" />
+        </g>
+      </symbol>
+      <symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="3.2"/></symbol>
+      <symbol id="i-mouse" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="3" width="11" height="18" rx="5.5"/><path d="M12 7v3"/></symbol>
+      <!-- The two steel-blue arcs that turn the S of the wordmark into an eye. -->
+      <symbol id="wm-arcs" viewBox="0 0 100 64">
+        <path fill="url(#wm-grad)" d="M1 25Q50-9 99 25Q50 3 1 25Z" />
+        <path fill="url(#wm-grad)" d="M1 39Q50 73 99 39Q50 61 1 39Z" />
+      </symbol>
+    </svg>
+
+    <!-- ===================== Mock browser window ===================== -->
+    <div id="browser">
+      <div class="tabbar">
+        <div class="lights"><i></i><i></i><i></i></div>
+        <div id="tabs"></div>
+        <button class="tab-new" aria-label="New tab" tabindex="-1">+</button>
+      </div>
+      <div class="navbar">
+        <div class="nav-btns">
+          <button aria-label="Back" tabindex="-1"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" /></svg></button>
+          <button aria-label="Forward" tabindex="-1"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" /></svg></button>
+          <button aria-label="Reload" tabindex="-1"><svg viewBox="0 0 24 24"><path d="M19 12a7 7 0 1 1-2.05-4.95M19 4v4h-4" /></svg></button>
+        </div>
+        <div class="omnibox">
+          <svg class="lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2" /><path d="M8 10V7a4 4 0 0 1 8 0v3" /></svg>
+          <span id="url"></span>
+        </div>
+        <div class="ext-area">
+          <button class="ext-puzzle" aria-label="Extensions" tabindex="-1">
+            <svg viewBox="0 0 24 24"><path d="M10 4a2 2 0 1 1 4 0v2h4v4h-2a2 2 0 1 0 0 4h2v4h-4v-2a2 2 0 1 0-4 0v2H6v-4h2a2 2 0 1 0 0-4H6V6h4z" /></svg>
+          </button>
+          <button id="ext-btn" aria-label="EyeSpye extension" title="EyeSpye">
+            <svg class="logo-icon"><use href="#logo" /></svg>
+            <span id="ext-badge" hidden></span>
+          </button>
+          <span class="avatar">S</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Extension popup (what clicking the toolbar icon opens) -->
+    <div id="ext-popup" hidden>
+      <div class="pop-head">
+        <svg class="logo-pop"><use href="#logo" /></svg>
+        <div>
+          <span class="wm wm-pop" aria-label="EyeSpye"><span>EYE</span><span class="wm-s">S<svg class="wm-arcs"><use href="#wm-arcs" /></svg><i class="wm-pupil"></i></span><span>PYE</span></span>
+          <p class="pop-sub">Hands-free reading that notices what you missed</p>
+        </div>
+      </div>
+      <div class="pop-status">
+        <span class="status" data-tone="idle">Off</span>
+        <span class="meter"></span>
+      </div>
+      <div class="seg seg-wide" role="group" aria-label="Input mode">
+        <button data-cmd="eyes" class="seg-btn"><svg class="ico"><use href="#i-eye" /></svg> Eye mode</button>
+        <button data-cmd="mouse" class="seg-btn"><svg class="ico"><use href="#i-mouse" /></svg> Mouse mode</button>
+      </div>
+      <div class="pop-grid">
+        <button data-cmd="pause" class="pop-tool"><b data-label="pause">Pause</b><span>Space</span></button>
+        <button data-cmd="calib" class="pop-tool"><b>Recalibrate</b><span>C</span></button>
+        <button data-cmd="debug" class="pop-tool"><b>Show tracking</b><span>D</span></button>
+        <button data-cmd="cam" class="pop-tool"><b>Camera preview</b><span>V</span></button>
+        <button data-cmd="pdf" class="pop-tool"><b>Open PDF</b><span>O</span></button>
+        <button data-cmd="reset" class="pop-tool"><b>Reset page</b><span>R</span></button>
+      </div>
+      <button data-cmd="finish" class="btn btn-primary btn-block">Summarize what I missed</button>
+      <p class="pop-foot">On-device eye tracking · your camera never leaves this laptop</p>
+    </div>
+    <div id="coach" hidden><span>Click the EyeSpye icon to start</span></div>
+
+    <!-- ===================== The web page being read ===================== -->
+    <main id="page">
+      <header class="site-header">
+        <span class="site-logo">Study<b>Hub</b></span>
+        <nav><span>Courses</span><span>Readings</span><span>Library</span><span>Account</span></nav>
+      </header>
+      <div id="reader">
+        <article id="article"></article>
+        <section id="end">
+          <p class="end-title">End of reading</p>
+          <p class="end-sub">Hold your gaze here. EyeSpye is preparing your report of what you missed.</p>
+        </section>
+        <div class="spacer"></div>
+      </div>
+    </main>
+
+    <!-- ===================== EyeSpye injected UI ===================== -->
+    <div id="bar" hidden>
+      <div class="bar-brand">
+        <svg class="logo-bar"><use href="#logo" /></svg>
+      </div>
+      <div class="bar-status">
+        <span class="status" data-tone="idle">Off</span>
+        <span class="meter"></span>
+      </div>
+      <div class="seg" role="group" aria-label="Input mode">
+        <button data-cmd="eyes" class="seg-btn" title="Eye mode (M toggles)"><svg class="ico"><use href="#i-eye" /></svg> Eyes</button>
+        <button data-cmd="mouse" class="seg-btn" title="Mouse mode (M toggles)"><svg class="ico"><use href="#i-mouse" /></svg> Mouse</button>
+      </div>
+      <div class="bar-tools">
+        <button data-cmd="pause" class="bar-btn" title="Pause / resume (Space)"><b data-label="pause">Pause</b></button>
+        <button data-cmd="calib" class="bar-btn" title="Recalibrate (C)">Recalibrate</button>
+        <button data-cmd="debug" class="bar-btn" title="Show tracking overlay (D)">Tracking</button>
+        <button data-cmd="cam" class="bar-btn" title="Camera preview (V)">Camera</button>
+        <button data-cmd="pdf" class="bar-btn" title="Open a PDF (O)">PDF</button>
+        <button data-cmd="reset" class="bar-btn" title="Reset reading (R)">Reset</button>
+      </div>
+      <button data-cmd="finish" class="bar-btn bar-primary" title="Summarize what I missed (S)">Summarize</button>
+    </div>
+    <aside id="minimap" aria-label="Reading coverage"></aside>
+    <aside id="panel" hidden></aside>
+
+    <div id="up-zone" aria-hidden="true"><b></b><span>look here ↑ to scroll back</span></div>
+    <div id="trigger-line" aria-hidden="true"><span>auto-follow line ↓</span></div>
+    <div id="cue-up" class="cue" aria-hidden="true"></div>
+    <div id="cue-down" class="cue" aria-hidden="true"></div>
+    <div id="gaze-dot" hidden><i></i></div>
+    <video id="webcam" autoplay playsinline muted></video>
+    <div id="overlay" class="overlay"></div>
+    <div id="drop" hidden>
+      <div class="drop-box">
+        <svg class="logo-drop"><use href="#logo" /></svg>
+        <p>Drop a PDF to read it with EyeSpye</p>
+      </div>
+    </div>
+    <input id="file-input" type="file" accept="application/pdf,.pdf" hidden />
+    <div id="print-root"></div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
